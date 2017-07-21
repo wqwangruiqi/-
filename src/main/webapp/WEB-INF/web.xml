@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  				xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      								http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+				version="3.0"
+  				metadata-complete="false">
+	<!-- 	maven创建的项目我们需要修改servlet版本为3.0  我们可以参照tomcat webapp  examples 下面的web.xml文件头 -->
+	
+	<!-- 配置编码过滤器 -->
+	 <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
+	
+	 
+	
+	<!-- 第一步： 配置DispatcherServlet  所有的SpringMvc请求都由它做分发处理-->
+	<servlet>
+		<servlet-name>SpringMVC-Dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+				<!--  配置SpringMVC需要加载的配置文件  (spring-dao.xml  spring-service.xml  spring-web.xml)
+						说一说框架整合顺序： Mybatis  -> spring    -> springMvc
+						(spring和springmvc其实不需要整合 他们已经自己做了一个整合 天衣无缝 毕竟是同一个框架产品)
+				-->
+		  <init-param>
+				<!-- 告诉springmvc有哪些配置文件 并且指定配置文件位置 如果不指定会默认为/WEB-INF/applicationContext.xml  -->
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/spring-*.xml</param-value>
+		</init-param> 
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringMVC-Dispatcher</servlet-name>
+		<!-- 默认匹配所有的请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<!-- 说一说这里我们为什么要加入ContextLoaderListener 这个listener类 
+		因为ContextLoaderListener会读取这些XML(<context-param>这个里面的)文件并产生 WebApplicationContext对象
+		然后将这个WebApplicationContext对象放置在ServletContext的属性里，
+		这样我们只要可以得到Servlet就可以得到WebApplicationContext对象，并利用这个对象访问spring 容器管理的bean
+		注意最后一句：访问spring 容器管理的bean  这样我们在自己配置监听器的时候 可以很容易的就获取到需要的bean
+	 -->
+	
+	<listener >     
+           <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
+    </listener> 
+    <!--  参数值存放在servletcontext  供ContextLoaderListener使用  如果这里不指明 ContextLoaderListener  会默认为/WEB-INF/applicationContext.xml-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/spring-*.xml</param-value>
+	</context-param>
+	
+	
+	
+  <display-name>Archetype Created Web Application</display-name>
+  
+  
+  
+<!--session 1 分钟后超时销毁-->
+<session-config>
+    <session-timeout>1</session-timeout>
+</session-config>
+
+  
+  <!-- 
+  可以这里使用 也可以使用@WebListener注解方式使用
+  <listener>
+  	<listener-class>org.wq.ssm.listener.ContextListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>org.wq.ssm.listener.SessionListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>org.wq.ssm.listener.RequestListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>org.wq.ssm.listener.ContextAttributeListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>org.wq.ssm.listener.SessionAttributeListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>org.wq.ssm.listener.RequestAttributeListener</listener-class>
+  </listener> -->
+
+ 
+	
+	
+	
+	<welcome-file-list>
+		<!-- <welcome-file>/seckill/list</welcome-file> -->
+		<welcome-file>index.jsp</welcome-file> 
+	</welcome-file-list>
+	
+	<!-- 当访问出错报404的时候 指定跳转至error页面 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/common/error.jsp</location>
+	</error-page>
+	
+
+
+</web-app>
+
+
+
+
+
+

@@ -1,0 +1,233 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wq</groupId>
+  <artifactId>maven-ssm</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>maven-ssm Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+		<springframework.version>4.3.3.RELEASE</springframework.version>
+		<assertj.version>2.5.0</assertj.version>
+	</properties>
+   
+   
+   <dependencies>
+		<!-- 使用junit4.1版本的原因是 可以使用注解方式 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
+		</dependency>
+		 <!-- 补全项目依赖 -->
+		<!--   1 日志: java日志    slf4j    log4j   logback  common-logging 
+				slf4j 是规范/接口
+				日志实现：log4j,logback,common-logging
+				使用slf4j+logback
+		-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<!-- 实现slfg4f接口 并且整合 -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<!-- 2    数据库相关依赖 -->
+					<!-- 2.1  驱动  -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.35</version>
+			<!-- 驱动只有在真正用到的时候才会用到  生命周期设置为runtime -->
+			<scope>runtime</scope>
+		</dependency>
+					<!-- 2.2 连接池 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+					<!-- 2.3 DAO(数据持久化层)框架依赖 使用mybatis依赖(主要有2个) -->
+					<!-- 首先添加mybatis自身依赖 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+					<!-- 其次 添加spring整合 mybatis依赖(mybatis前身(ibatis)出现的比较早spring提供了ibatis依赖 mybatis出现后
+					 spring没提供对mybatis的依赖 所以 mybatis自身实现的spring整合依赖) -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<!-- 3	 servlet web相关依赖 -->
+						<!-- jsp相应标签 -->
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+						<!-- jstl标签 -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+						<!-- json依赖 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.4</version>
+		</dependency>
+					<!-- servlet依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!--4  最重要的依赖 spring 依赖  -->
+				<!--4.1 spring 核心依赖 -->
+						<!--4.1.1 spring 最核心包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+						<!--4.1.2 spring ioc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+						<!--4.1.3 spring 扩展context(包扫描等)-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+				<!--4.2 spring dao层依赖 -->
+					<!--4.2.1  jdbc事务管理器  -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+					<!--4.2.2  申明制事物  -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+					<!--4.2.3  spirng web相关依赖-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+				<!--4.2.3  spirng mvc相关依赖-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!--4.3   spirng test相关依赖(测试的时候需要加载相关容器)-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<!-- redis NOSQL数据库的驱动 jedis-->
+		<dependency>
+		    <groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+		<!-- 序列化自定义依赖 -->
+		<dependency>
+		    <groupId>com.dyuproject.protostuff</groupId>
+		    <artifactId>protostuff-core</artifactId>
+		    <version>1.0.8</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.dyuproject.protostuff</groupId>
+		    <artifactId>protostuff-runtime</artifactId>
+		    <version>1.0.8</version>
+		</dependency>
+		<!-- 项目里面使用MapUtil是需要使用该依赖 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-collections4</artifactId>
+		    <version>4.1</version>
+		</dependency>
+		
+		<!-- 文件操作 -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.5</version>
+		</dependency>
+		<!-- 文件上传 -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.3</version>
+		</dependency>
+		<!-- 表单字段注解验证 -->
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>1.1.0.Final</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>5.4.1.Final</version>
+		</dependency>
+		
+ 		<!--  <dependency>
+		    <groupId>org.glassfish.web</groupId>
+		    <artifactId>el-impl</artifactId>
+		    <version>2.2</version>
+		</dependency>  -->
+		
+		
+		<!--  github开源mybatis分页插件-->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>5.0.3</version>
+		</dependency>
+		
+		
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjrt</artifactId>
+		    <version>1.8.10</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.10</version>
+		</dependency>
+		
+	</dependencies>
+   
+   
+  <build>
+    <finalName>maven-ssm</finalName>
+  </build>
+</project>

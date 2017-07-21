@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为dao接口方法提供sql语句配置 -->
+<mapper namespace="org.wq.ssm.dao.lasw.LaswNewsTitleDao">
+	
+	 
+	
+	<select id="queryByMenuId" resultType="LaswNewsTitle">
+	 	select 
+	 	tt.id ,tt.title_name ,tt.click_number ,tt.laswmenu_id ,tt.insert_time ,tt.update_time ,tt.istop ,tt.isdelete ,
+	 	menu.id "laswMenu.id" ,			menu.parent_id "laswMenu.parentId" ,			menu.name_china "laswMenu.nameChina" ,			
+	 	menu.name_english "laswMenu.nameEnglish" ,			menu.des_china "laswMenu.desChina" ,			menu.des_english "laswMenu.desEnglish" ,			
+	 	menu.order_column "laswMenu.orderColumn" ,			menu.cssimg "laswMenu.cssimg" ,		menu.menu_show "laswMenu.menuShow" 
+	 	from lasw_news_title   tt
+	 	left join lasw_menutype menu on  tt.laswmenu_id=menu.id
+	 	where tt.isdelete = 0 and tt.laswmenu_id  = #{menuId}
+	 	order by tt.istop desc
+	</select>
+	
+	<!--数据添加 默认isdelete=0 表示数据未删除  所以可以不对该字段设置 clickNumber  默认3次   update_time 数据库默认当前服务器时间 -->
+	<!-- 注意 useGeneratedKeys="true" keyProperty="id"  是将数据库表里面的id值 存放在LaswNewsTitle  这个对象的id里面 而不是默认的返回值就是主键了 如果需要主键值 需要调用对象的getid方法获取 
+			最后 数据操作的条数 依然会返回
+	 -->
+	<insert id="insert" parameterType="LaswNewsTitle" useGeneratedKeys="true" keyProperty="id"    >
+		insert into lasw_news_title(title_name,laswmenu_id,insert_time,istop)
+		values(#{titleName},#{laswmenuId},#{insertTime},#{istop});
+	</insert>
+	
+	<!-- 数据修改 强制要求insert_time不变  isdelete 依然不变 laswmenu_id亦不能变   -->
+	<update id="update" parameterType="LaswNewsTitle">
+		update lasw_news_title 
+			set 	title_name=#{titleName},
+					click_number=click_number+1,
+					update_time=#{updateTime},
+					istop=#{istop}
+			where id = #{id}
+	</update>
+	<!-- 只是修改新闻点击次数 -->
+	<update id="updateClickNumber" parameterType="LaswNewsTitle">
+		update lasw_news_title 
+			set 	click_number=click_number+1
+			where id = #{titleId}
+	</update>
+	
+	
+	<!-- 数据删除 只是修改 isdelete的状态值 -->
+	<update id="delete" parameterType="LaswNewsTitle">
+			update lasw_news_title 
+			set 	isdelete = 1
+			where id = #{titleId}
+	</update>
+	
+	<select id="queryPage" resultType="LaswNewsTitle">
+			select * from  lasw_news_title where isdelete = 0
+			<if test="newsTitleName !=null  and  newsTitleName!=''">
+				and title_name=#{newsTitleName}
+			</if>
+			<if test="beginTime !=null ">
+				and insert_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null ">
+				and insert_time  &lt;= #{endTime}
+			</if>
+			<if test="menuIdF !=null   and menuIdF > 0">
+				and laswmenu_id  in (select id from lasw_menutype where parent_id = #{menuIdF})
+			</if>
+			<if test="menuIdS !=null   and menuIdS > 0">
+				and laswmenu_id   = #{menuIdS}
+			</if>
+			order by istop desc,update_time desc
+	</select>
+	
+	
+
+</mapper>
+ 
+ 

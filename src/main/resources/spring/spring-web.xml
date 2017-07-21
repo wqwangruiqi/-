@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+									 http://www.springframework.org/schema/beans/spring-beans.xsd
+									 http://www.springframework.org/schema/context
+									 http://www.springframework.org/schema/context/spring-context.xsd
+									 http://www.springframework.org/schema/mvc
+									 http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+									 http://www.springframework.org/schema/aop 
+        							http://www.springframework.org/schema/aop/spring-aop.xsd">
+									 
+		<!-- 配置springmvc -->								 
+		
+		
+		<!-- 1 ： 开启springMVC 注解模式 -->
+	 		<!-- 简化配置 ( 	1 自动注册：DefaultAnnotationHandlerMapping和AnonotationMethodHandlerAdapter 
+	 								 	2 默认提供了一系列：数据绑定，数字和日期的format[ag:NumberFormat,@DataTimeFormat],xml,json默认读写支持 ) -->
+    <mvc:annotation-driven  conversion-service="conversionService" />
+		 <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />  
+		<!-- 2:	静态资源 默认servlet配置
+					1：加入对静态资源的处理 js,gif,png css等
+					2：允许使用"/" 作用映射 (之前是不允许的)
+		 -->
+		<!--servlet-mapping 映射路径: "/"  -->
+		<mvc:default-servlet-handler/>
+		
+		
+		<!--3:配置jsp显示viewResolver  -->
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+				<!--  -->
+				<property name="viewClass"  value="org.springframework.web.servlet.view.JstlView"/>
+				<!-- 默认前缀 所有的jsp默认放在WEB-INF/jsp 下面   -->
+				<property name="prefix"  		value="/WEB-INF/jsp/"/>
+				<!-- 文件以什么结尾 -->
+				<property name="suffix"  value=".jsp"/>
+		</bean>
+		
+		<!-- 4： 扫描web相关的bean  -->
+		<context:component-scan base-package="org.wq.ssm.web" />
+		<!--  -->
+		<aop:aspectj-autoproxy/>
+		<context:component-scan base-package="org.wq.ssm.aspect" />
+		<context:component-scan base-package="org.wq.ssm.handle" />
+		
+		 
+		
+		
+		<!--文件上传  -->
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!--限制文件最大上传量  -->
+			<property name="maxUploadSize" value="1024" />     
+			<!-- 默认字节编码 -->
+		    <property name="defaultEncoding" value="UTF-8" />  
+		    <!-- 延迟加载 -->
+		    <property name="resolveLazily" value="true" />
+		</bean>
+		
+		
+		
+		 <!-- 
+	  <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />  
+    使用JSR-303 Validation进行验证  
+    <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        不设置则默认为classpath下的 ValidationMessages.properties
+        <property name="validationMessageSource" ref="validatemessageSource"/>
+    </bean>
+    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basename" value="classpath:validatemessages"/>  
+        <property name="fileEncodings" value="utf-8"/>  
+        <property name="cacheSeconds" value="120"/>  
+    </bean>  -->
+		
+</beans>

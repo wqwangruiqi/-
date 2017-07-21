@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为dao接口方法提供sql语句配置 -->
+<mapper namespace="org.wq.ssm.dao.lasw.LaswMenuDao">
+	<select id="queryAll"  resultType="LaswMenu"  >
+		select  * from lasw_menutype  order by order_column
+	</select>
+	 
+	
+	 
+	 <!-- 获取对象 -->
+	 <resultMap type="LaswMenu" id="laswMenu"  autoMapping="true" >
+		 	<result property="id" column="id"/>
+		 	<result property="parentId" column="parent_id"/>
+	        <association property="parent" column="parent_id" select="selectParent" /> 
+	        <collection property="child" column="id" ofType="LaswMenu"   javaType="java.util.ArrayList" select="selectChildren" />
+    </resultMap>
+    
+    <resultMap type="LaswMenu" id="parentLaswMenu"  autoMapping="true" >
+		 	<result property="parentId" column="parent_id"/>
+	        <association property="parent" column="parent_id" select="selectParent" /> 
+    </resultMap>
+    
+    <resultMap type="LaswMenu" id="childLaswMenu"  autoMapping="true" >
+		 	<result property="id" column="id"/>
+	        <collection property="child" column="id" ofType="LaswMenu"   javaType="java.util.ArrayList" select="selectChildren" />
+    </resultMap>
+    
+    
+	 
+	 <!-- 根据父类id获取父类 -->
+	 <select id="selectParent" resultMap="parentLaswMenu" >
+        select *  from lasw_menutype where id=#{parent_id}
+    </select>
+	 <!--  根据id获取子类-->
+	 <select id="selectChildren" resultMap="childLaswMenu" >
+        select * from lasw_menutype where parent_id=#{id} order by order_column
+    </select>
+	 
+	 
+	 
+	 <!-- 根据id获取对象 -->
+	 <select id="queryById"    resultMap="laswMenu"  >
+		select  * from lasw_menutype where id=#{id}  order by order_column
+	</select>
+	  
+	  <select id="queryParentFirst"    resultType="LaswMenu"  >
+		select  * from lasw_menutype where parent_id is null     order by order_column
+	</select>
+	 
+	
+	
+
+</mapper>
+ 
+ 

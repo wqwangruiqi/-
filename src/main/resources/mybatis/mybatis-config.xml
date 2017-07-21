@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 整个配置文件内容来源 参考官网 http://www.mybatis.org/mybatis-3/zh/getting-started.html 
+	入门.... -->
+
+<configuration>
+	<!--配置全局属性 -->
+	<settings>
+		<!-- 使用jdbc的getGeneratedKeys 获取数据库自增主键值 -->
+		<setting name="useGeneratedKeys" value="true" /><!-- 默认false -->
+		<!-- 使用列别名替换列名 -->
+		<setting name="useColumnLabel" value="true" /><!-- 默认true -->
+		<!-- 开启驼峰命名转换 create_time 对应 createTime -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<!--  自定义分页插件 有问题 慎用
+	<plugins>  
+	    <plugin interceptor="cn.wq.seckill.interceptor.PageInterceptor"/>
+	</plugins>  -->
+	
+	
+	<plugins>
+	    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+	        <!-- config params as the following -->
+	        <!-- 分页插件会自动检测当前的数据库链接，自动选择合适的分页方式  配置helperDialect属性来指定分页插件使用哪种方言 -->
+	        <property name="helperDialect" value="mysql"/>
+	        <!--  pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页 -->
+	         <property name="reasonable" value="true"/>
+		</plugin>
+	</plugins>
+	
+</configuration>

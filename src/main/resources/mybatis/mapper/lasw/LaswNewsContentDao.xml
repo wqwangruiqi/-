@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为dao接口方法提供sql语句配置 -->
+<mapper namespace="org.wq.ssm.dao.lasw.LaswNewsContentDao">
+	
+	
+	<resultMap type="LaswNewsContent" id="tt_con_at">
+			<result column="id" property="id"/>
+			<result column="laswnews_titleid" property="laswnewsTitleid"/>
+			<result column="news_content" property="newsContent"/>
+			<association property="laswNewsTitle"  javaType="LaswNewsTitle" >
+				<result column="laswNewsTitle.id" property="id"/>
+				<result column="laswNewsTitle.titleName" property="titleName"/>
+				<result column="laswNewsTitle.clickNumber" property="clickNumber"/>
+				<result column="laswNewsTitle.laswmenuId" property="laswmenuId"/>
+				<result column="laswNewsTitle.insertTime" property="insertTime"/>
+				<result column="laswNewsTitle.updateTime" property="updateTime"/>
+				<result column="laswNewsTitle.istop" property="istop"/>
+				<result column="laswNewsTitle.isdelete" property="isdelete"/>
+			</association>
+			<collection property="attachmentList" ofType="LaswNewsAttachment"  >  
+				<result column="attid" property="id"/>
+				<result column="laswnewsContentid" property="laswnewsContentid"/>
+				<result column="fileName" property="fileName"/>
+				<result column="fileSize" property="fileSize"/>
+				<result column="fileType" property="fileType"/>
+				<result column="filePath" property="filePath"/>
+	        </collection>  
+		
+	</resultMap>
+	
+	<select id="queryByTitleIdWithTitleWithAtts" resultMap="tt_con_at">
+	select 
+			con.id  "id",		con.laswnews_titleid ,		con.news_content,
+			tt.id "laswNewsTitle.id",	tt.title_name "laswNewsTitle.titleName" ,		
+			tt.click_number "laswNewsTitle.clickNumber",		tt.laswmenu_id "laswNewsTitle.laswmenuId",
+			tt.insert_time	"laswNewsTitle.insertTime",		tt.update_time "laswNewsTitle.updateTime",	
+			tt.istop "laswNewsTitle.istop",tt.isdelete "laswNewsTitle.isdelete",
+			att.id  "attid" ,att.laswnews_contentid "laswnewsContentid" ,att.file_name "fileName" ,
+			att.file_size "fileSize",att.file_type "fileType",att.file_path "filePath"
+			from lasw_news_content con  
+			left join lasw_news_title tt on tt.id=con.laswnews_titleid
+			left join lasw_news_attachment  att  on  con.id=att.laswnews_contentid
+			where con.laswnews_titleid = #{titleId}
+	</select>
+	
+	<insert id="insert" parameterType="LaswNewsContent" useGeneratedKeys="true" keyProperty="id">
+		insert into lasw_news_content(laswnews_titleid,news_content)
+		values(#{laswnewsTitleid},#{newsContent});
+	</insert>
+	
+	<update id="update" parameterType="LaswNewsContent">
+		update lasw_news_content 
+			set 	news_content=#{newsContent}
+			where id = #{id}
+	</update>
+
+</mapper>
+ 
+ 

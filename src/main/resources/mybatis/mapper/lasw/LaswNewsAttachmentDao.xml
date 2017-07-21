@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为dao接口方法提供sql语句配置 -->
+<mapper namespace="org.wq.ssm.dao.lasw.LaswNewsAttachmentDao">
+	
+	<resultMap type="LaswNewsAttachment" id="att_content">
+		<result column="laswnews_contentid" property="laswnewsContentid"/>
+		<association property="laswNewsContent" column="laswnews_contentid" select="getContent"/>   
+	</resultMap>
+	
+	 <select id="getContent" parameterType="int" resultType="LaswNewsContent">
+        select *  from lasw_news_content where id =#{laswnews_contentid}
+    </select>
+	
+	
+	 <select id="queryById" resultType="LaswNewsAttachment">
+	 	select * from lasw_news_attachment where id = #{attachmentId}
+	 </select>
+	
+	<select id="queryByContentId" resultType="LaswNewsAttachment">
+		select * from lasw_news_attachment where laswnews_contentid = #{contentId}
+	</select>
+	
+	<insert id="insert" parameterType="LaswNewsAttachment" useGeneratedKeys="true" keyProperty="id">
+		insert into lasw_news_attachment(laswnews_contentid,file_name,file_size,file_type,file_path)
+		values(#{laswnewsContentid},#{fileName},#{fileSize},#{fileType},#{filePath});
+	</insert>
+	
+	<update id="update" parameterType="LaswNewsAttachment">
+		update lasw_news_attachment 
+			set 	laswnews_contentid=#{laswnewsContentid},
+					file_name=#{fileName},
+					file_size=#{fileSize},
+					file_type=#{fileType},
+					file_path=#{filePath}
+			where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from lasw_news_attachment where id = #{attachmentId} 
+	</delete>
+	
+
+</mapper>
+ 
+ 

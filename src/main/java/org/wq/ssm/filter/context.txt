@@ -1,0 +1,72 @@
+过滤器包
+过滤器的生命周期:
+		实例化： tomcat启动的时候根据web.xml实例化(只会实例化一次)
+		初始化：过滤器启动成功会加载一下初始化数据 会 执行filter的init方法(只执行一次)
+		过滤：filter里面的doFilter方法(每次过滤请求都会执行)
+		销毁：执行filter的destroy 方法容器销毁的时候执行(只执行一次)
+过滤器的分类：
+	REQUEST	用户直接访问页面时 web容器将会调用过滤器
+	FORWARD	目标资源是通过RequestDispatcher的forward访问时 该过滤器将会被调用
+	INCLUDE	目标资源是通过RequestDispatcher的include方法调用时 该过滤器将会被调用
+	ERROR		目标资阳是通过声明式异常处理机制调用时 过滤器将会被调用
+
+
+
+过滤器可以改变用户请求的web资源(即改变用户的请求路径)
+过滤器不能直接返回数据，不能直接处理用户请求
+多个过滤器执行顺序:
+	如果过滤器彼此间过滤的地址没有交集 那么就不存在顺序之说
+	如果多个过滤器过滤地址相同那么：执行顺序是按照web.xml中过滤器定义的先后顺序组成一条链 顺序执行
+	
+									filter1															filter2																servlet
+								
+|-->	用户url------->  	filter1 doFilter执行前逻辑		|------>filter2 doFilter执行前逻辑	
+|										|											|					|																			
+|										|											|					|																			
+|					chain.doFilter(request, response);-----					chain.doFilter(request, response)---------->	servlet方法		
+|																																													|
+|																																													|
+<--------------filter2 doFilter执行后逻辑	<-------------filter2 doFilter执行后逻辑		<-------------------------
+
+
+
+
+filter1
+System.out.println("TestFilter1 执行  doFilter  方法 start .........");
+chain.doFilter(request, response);
+System.out.println("TestFilter1 执行  doFilter  方法 end .........");
+
+
+filter2
+System.out.println("TestFilter2 执行  doFilter  方法 start .........");
+chain.doFilter(request, response);
+System.out.println("TestFilter2 执行  doFilter  方法 end .........");
+
+
+打印顺序：
+System.out.println("TestFilter1 执行  doFilter  方法 start .........");
+System.out.println("TestFilter2 执行  doFilter  方法 start .........");
+System.out.println("TestFilter2 执行  doFilter  方法 end .........");
+System.out.println("TestFilter1 执行  doFilter  方法 end .........");
+
+
+
+
+
+
+web.xml需要配置
+如下...
+
+ <filter>
+        <filter-name>testFilter</filter-name>
+        <filter-class>org.wq.ssm.filter.TestFilter</filter-class>
+        <init-param>
+            <param-name>WQ</param-name>
+            <param-value>王强</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>testFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
+	

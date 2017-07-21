@@ -1,0 +1,36 @@
+
+
+
+
+前端控制器(请求分发调度)
+
+controller  因为数据抽取
+
+view template 页面呈现
+
+view 视图层
+model 模型层  业务数据信息表示
+controller 控制层 控制业务逻辑产生合适的model
+
+什么是MVC
+mvc是一种架构模式
+	程序分层，分工合作 既相互独立有协同工作
+mvc是一种思考方式
+	需要将什么信息展示给用户(model)   如何布局(view)  调用哪些业务逻辑(controller)
+
+
+DispatcherServlet	前端控制器   将 controler 和 view 和 view之间关联
+HandlerAdapter  作用是  DispatcherServlet调用controller的一种中间过渡对象
+HandlerInterceptor 拦截器(包含3个方法 即：preHandle、postHandle和afterCompletion)   可以在需要被拦截对象的前后进行相关操作(调用controller前、后 以及最终model发送到页面或完成view呈现之后做很多事情)
+HandlerMapping    DispatcherServlet  和 controller映射关系一种类  即帮助DispatcherServlet 找到对应controller
+HandlerExecutionChain     preHandle--->controller---->postHandle----->afterCompletion
+ModelAndView   model的具体表现
+ViewResolver 根据配置找出具体的视图对象
+View 呈现页面信息		
+
+
+
+
+
+
+
