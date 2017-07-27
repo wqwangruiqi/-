@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为dao接口方法提供sql语句配置 -->
+<mapper namespace="org.wq.ssm.dao.management.UserInfoDao">
+	<select id="queryAll"  resultType="UserInfo"  >
+		select  * from userinfo  order by id
+	</select>
+
+
+	<insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into userinfo(user_name,age,email)
+		values(#{userName},#{age},#{email});
+	</insert>
+	 
+
+
+</mapper>
+ 
+ 
