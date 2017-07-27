@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
-import org.wq.ssm.dao.redis.RedisDao;
 import org.wq.ssm.dao.seckill.SeckillDao;
 import org.wq.ssm.dao.seckill.SuccessKilledDao;
 import org.wq.ssm.dto.seckill.Exposer;
@@ -23,6 +22,7 @@ import org.wq.ssm.enums.SeckillStatEnum;
 import org.wq.ssm.exception.seckill.RepeatKillException;
 import org.wq.ssm.exception.seckill.SeckillCloseException;
 import org.wq.ssm.exception.seckill.SeckillException;
+import org.wq.ssm.redis.RedisDao;
 
 //@Component  代表所有的组建  当不知道是哪个组建的时候 可以使用该注解
 //@Service

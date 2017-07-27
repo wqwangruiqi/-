@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wq.ssm.annotation.DataSourceAnnotatin;
 import org.wq.ssm.dao.lasw.LaswMenuDao;
 import org.wq.ssm.dto.lasw.MenuTreeUtil;
 import org.wq.ssm.entity.lasw.LaswMenu;
@@ -35,7 +36,7 @@ public class LaswMenuService {
 	}
 
 	// 获取全部
-	public List<LaswMenu> queryAll(Long id) {
+	public List<LaswMenu> queryAll() {
 		return laswMenuDao.queryAll();
 	}
 

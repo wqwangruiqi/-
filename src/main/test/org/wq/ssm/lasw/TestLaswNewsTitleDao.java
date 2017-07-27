@@ -20,7 +20,10 @@ import org.wq.ssm.entity.lasw.LaswNewsTitle;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //告诉junit spring 配置文件
-@ContextConfiguration(("classpath:spring/spring-dao.xml"))
+@ContextConfiguration({ 
+	"classpath:spring/spring-dao.xml", 
+	"classpath:spring/spring-service.xml" ,
+	"classpath:spring/spring-web.xml" })
 public class TestLaswNewsTitleDao {
 	//注入dao实现类依赖
 	@Resource

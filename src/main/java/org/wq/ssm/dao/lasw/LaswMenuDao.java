@@ -2,6 +2,7 @@ package org.wq.ssm.dao.lasw;
 
 import java.util.List;
 
+import org.wq.ssm.annotation.DataSourceAnnotatin;
 import org.wq.ssm.entity.lasw.LaswMenu;
 
 /**
@@ -10,7 +11,9 @@ import org.wq.ssm.entity.lasw.LaswMenu;
  * @author wangqiang
  *
  */
-public interface LaswMenuDao {
+
+@DataSourceAnnotatin(dataSource="master")
+public interface LaswMenuDao{
 	
 	//获取全部
 	List<LaswMenu>  queryAll();

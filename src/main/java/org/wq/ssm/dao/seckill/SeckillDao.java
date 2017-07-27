@@ -24,7 +24,7 @@ public interface SeckillDao {
 	 * 如果影响行数>1 表示更新的记录行数
 	 * 
 	 */
-	int reduceNumber(@Param("seckillId")long seckillId, @Param("killTime") Date killTime);
+	public int reduceNumber(@Param("seckillId")long seckillId, @Param("killTime") Date killTime);
 
 	/**
 	 * 根据秒杀商品id检索秒杀商品对象
@@ -32,7 +32,7 @@ public interface SeckillDao {
 	 * @param seckillId
 	 * @return
 	 */
-	Seckill queryById(long seckillId);
+	public Seckill queryById(long seckillId);
 
 	/**
 	 * 根据偏移量查询秒杀商品列表
@@ -49,14 +49,14 @@ public interface SeckillDao {
 		如果只有一个参数值不会报错 但是多个参数就回报错了 所以需要告诉mybatis哪个位置的参数叫什么名字 然后才能找到
 		使用mybatis 提供的 注解@Param 可以解决问题		
 	 */
-	List<Seckill> queryAll(@Param("offet")int offet, @Param("limit")int limit);
+	public List<Seckill> queryAll(@Param("offet")int offet, @Param("limit")int limit);
 	
 	
 	/**
 	 * 使用存储过程执行秒杀
 	 * @param paramMap
 	 */
-	void killByProcedure(Map<String, Object> paramMap);
+	public void killByProcedure(Map<String, Object> paramMap);
 	
 
 }

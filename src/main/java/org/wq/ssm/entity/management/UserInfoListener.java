@@ -1,4 +1,4 @@
-package org.wq.ssm.entity.mangement;
+package org.wq.ssm.entity.management;
 
 import java.io.Serializable;
 

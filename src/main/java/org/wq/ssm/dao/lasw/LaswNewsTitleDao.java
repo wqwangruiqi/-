@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.wq.ssm.annotation.DataSourceAnnotatin;
 import org.wq.ssm.entity.lasw.LaswNewsTitle;
 
 /**
@@ -14,6 +15,7 @@ import org.wq.ssm.entity.lasw.LaswNewsTitle;
  * 类的说明:新闻详细信息的dao
  *
  */
+@DataSourceAnnotatin(dataSource="master")
 public interface LaswNewsTitleDao {
 	/**
 	 * @author wangqiang

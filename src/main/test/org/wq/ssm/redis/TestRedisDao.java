@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.wq.ssm.dao.redis.RedisDao;
+import org.wq.ssm.redis.RedisDao;
 import org.wq.ssm.dao.seckill.SeckillDao;
 import org.wq.ssm.entity.seckill.Seckill;
 

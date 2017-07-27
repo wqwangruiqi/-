@@ -3,6 +3,9 @@ package org.wq.ssm.service.lasw;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,16 @@ public class LaswNewsTitleService {
 	private LaswNewsContentDao laswNewsContentDao;
 	@Autowired
 	private LaswNewsAttachmentDao laswNewsAttachmentDao;
+	
+	
+	@PostConstruct
+	public void init(){
+		//System.out.println("初始化前运行");
+	}
+	@PreDestroy
+	public void destroy(){
+		//System.out.println("销毁后运行");
+	}
 	
 	//保存新闻  注意 这里需要事务
 	@Transactional
